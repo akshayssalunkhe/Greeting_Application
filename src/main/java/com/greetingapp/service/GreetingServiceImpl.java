@@ -8,4 +8,19 @@ public class GreetingServiceImpl implements IGreetingService {
     public String getGreeting() {
         return "Hello World";
     }
+
+    @Override
+    public String getGreetingWithFirstName(String firstName) {
+        return ("Hello" + " " + firstName);
+    }
+
+    @Override
+    public String getGreetingWithLastName(String lastName) {
+        return ("Hello" + " " + lastName);
+    }
+
+    @Override
+    public String getGreetingWithFullName(String fullName) {
+        return ("Hello" + " " + fullName);
+    }
 }
