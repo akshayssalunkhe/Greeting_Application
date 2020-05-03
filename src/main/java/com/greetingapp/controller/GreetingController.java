@@ -29,7 +29,6 @@ public class GreetingController {
     @GetMapping("/param/{name}")
     public Greeting sayHelloParam(@PathVariable String name) {
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
-
     }
 
     @PutMapping("/put/{firstName}")
@@ -46,5 +45,20 @@ public class GreetingController {
     @RequestMapping("/greetingService")
     public String greeting() {
         return greetingService.getGreeting();
+    }
+
+    @GetMapping("/greetingServiceFirstName/param/{firstName}")
+    public String greetingWithFirstName(@PathVariable String firstName) {
+        return greetingService.getGreetingWithFirstName(firstName);
+    }
+
+    @GetMapping("/greetingServiceLastName/param/{lastName}")
+    public String greetingWithLastName(@PathVariable String lastName) {
+        return greetingService.getGreetingWithLastName(lastName);
+    }
+
+    @GetMapping("/greetingServiceFullName/param/{fullName}")
+    public String greetingWithFullName(@PathVariable String fullName) {
+        return greetingService.getGreetingWithFullName(fullName);
     }
 }
