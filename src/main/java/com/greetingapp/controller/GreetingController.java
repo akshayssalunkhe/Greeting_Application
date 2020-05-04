@@ -1,6 +1,7 @@
 package com.greetingapp.controller;
 
 import com.greetingapp.dto.Greeting;
+import com.greetingapp.dto.User;
 import com.greetingapp.service.IGreetingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,15 +32,9 @@ public class GreetingController {
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
     }
 
-    @PutMapping("/put/{firstName}")
-    public Greeting greetingPathVariableAndRequestParam(@PathVariable String firstName, @RequestParam(value = "lastName") String lastName) {
-        String template = "Hello , %s %s !";
-        return new Greeting(counter.incrementAndGet(), String.format(template, firstName, lastName));
-    }
-
     @GetMapping("/greeting")
     public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return new Greeting(counter.incrementAndGet(), String.format(template, name));
+        return new Greeting(counter.incrementAndGet(), greetingService.getGreeting(name));
     }
 
     @RequestMapping("/greetingService")
@@ -47,18 +42,13 @@ public class GreetingController {
         return greetingService.getGreeting();
     }
 
-    @GetMapping("/greetingServiceFirstName/param/{firstName}")
-    public String greetingWithFirstName(@PathVariable String firstName) {
-        return greetingService.getGreetingWithFirstName(firstName);
+    @PutMapping("/put/{firstName}")
+    public Greeting greetingPut(@PathVariable String firstName, @RequestParam(value = "lastName") String lastName) {
+        return new Greeting(counter.incrementAndGet(), greetingService.getGreeting(firstName, lastName));
     }
 
-    @GetMapping("/greetingServiceLastName/param/{lastName}")
-    public String greetingWithLastName(@PathVariable String lastName) {
-        return greetingService.getGreetingWithLastName(lastName);
-    }
-
-    @GetMapping("/greetingServiceFullName/param/{fullName}")
-    public String greetingWithFullName(@PathVariable String fullName) {
-        return greetingService.getGreetingWithFullName(fullName);
+    @PostMapping("/post")
+    public Greeting greetingPost(@RequestBody User user) {
+        return new Greeting(counter.incrementAndGet(), greetingService.getGreeting(user.getFirstName(), user.getLastName()));
     }
 }
