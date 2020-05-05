@@ -12,24 +12,23 @@ import java.util.concurrent.atomic.AtomicLong;
 @RequestMapping("/greeting")
 public class GreetingController {
     private final AtomicLong counter = new AtomicLong();
-    private static final String template = "Hello %s!";
 
     @Autowired
     IGreetingService greetingService;
 
     @RequestMapping(value = {"", "/", "/home"})
     public String sayHello() {
-        return "Hello";
+        return greetingService.getGreeting();
     }
 
     @RequestMapping(value = {"/query"}, method = RequestMethod.GET)
     public Greeting sayHello(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return new Greeting(counter.incrementAndGet(), String.format(template, name));
+        return new Greeting(counter.incrementAndGet(), greetingService.getGreeting(name));
     }
 
     @GetMapping("/param/{name}")
     public Greeting sayHelloParam(@PathVariable String name) {
-        return new Greeting(counter.incrementAndGet(), String.format(template, name));
+        return new Greeting(counter.incrementAndGet(), greetingService.getGreeting(name));
     }
 
     @GetMapping("/greeting")
@@ -49,6 +48,6 @@ public class GreetingController {
 
     @PostMapping("/post")
     public Greeting greetingPost(@RequestBody User user) {
-        return new Greeting(counter.incrementAndGet(), greetingService.getGreeting(user.getFirstName(), user.getLastName()));
+        return greetingService.addGreeting(user);
     }
 }

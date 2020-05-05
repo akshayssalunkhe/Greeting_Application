@@ -1,8 +1,15 @@
 package com.greetingapp.dto;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "greetingApp")
 public class Greeting {
-    private final long incrementAndGet;
-    private final String format;
+    @Id
+    private long incrementAndGet;
+    private String format;
 
     public Greeting(long incrementAndGet, String format) {
         this.incrementAndGet = incrementAndGet;
