@@ -1,26 +1,40 @@
 package com.greetingapp.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "greetingApp")
 public class Greeting {
     @Id
-    private long incrementAndGet;
-    private String format;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    private String message;
 
-    public Greeting(long incrementAndGet, String format) {
-        this.incrementAndGet = incrementAndGet;
-        this.format = format;
+    public Greeting(long id, String message) {
+        this.id = id;
+        this.message = message;
     }
 
-    public long getIncrementAndGet() {
-        return incrementAndGet;
+    public Greeting() {
     }
 
-    public String getFormat() {
-        return format;
+    public Greeting(String message) {
+        this.message = message;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

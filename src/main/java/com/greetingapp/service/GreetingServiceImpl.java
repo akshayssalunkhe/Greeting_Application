@@ -7,7 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.List;
 
 
 @Service
@@ -19,23 +19,37 @@ public class GreetingServiceImpl implements IGreetingService {
     @Autowired
     IGreetingRepository greetingRepository;
 
-    private AtomicInteger counter;
-
-    @Override
-    public String getGreeting(String... name) {
-        if (name.length == 1) {
-            return "Hello " + name[0];
-        }
-        if (name.length == 2)
-            return "Hello " + name[0] + " " + name[1];
-        return "Hello World";
-    }
+    String template = "Hello %s";
 
     @Override
     public Greeting addGreeting(User user) {
-        String message = "Hello";
-        message = user.toString().isEmpty() ? "Hello World" : user.getFirstName() + " " + user.getLastName();
-        Greeting greeting = modelMapper.map(new Greeting(counter.incrementAndGet(), message), Greeting.class);
+        String message = (user.getFirstName().isEmpty() && user.getLastName().isEmpty()) ? String.format(template, "World") :
+                (user.getFirstName().isEmpty()) ? String.format(template, user.getLastName()) :
+                        (user.getLastName().isEmpty()) ? String.format(template, user.getFirstName()) :
+                                String.format(template, user.getFirstName() + " " + user.getLastName());
+
+        Greeting map = modelMapper.map(new Greeting(message), Greeting.class);
+        return greetingRepository.save(map);
+    }
+
+    @Override
+    public Greeting getGreeting(long id) {
+        return greetingRepository.findById(id).get();
+    }
+
+    @Override
+    public void deleteGreeting(long id) {
+        greetingRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Greeting> getAllGreeting() {
+        return greetingRepository.findAll();
+    }
+
+    public Greeting updateGreeting(long id, String message) {
+        Greeting greeting = greetingRepository.findById(id).get();
+        greeting.setMessage(message);
         return greetingRepository.save(greeting);
     }
 }
