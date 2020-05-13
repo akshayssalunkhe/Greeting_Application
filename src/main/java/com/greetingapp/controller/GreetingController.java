@@ -17,12 +17,12 @@ public class GreetingController {
     @Autowired
     IGreetingService greetingService;
 
-    @GetMapping("/greeting/{id}")
+    @GetMapping("/id/{id}")
     public Greeting greetingGet(@PathVariable long id) {
         return greetingService.getGreeting(id);
     }
 
-    @RequestMapping("/greetingService")
+    @RequestMapping("/allService")
     public List<Greeting> greetingList() {
         return greetingService.getAllGreeting();
     }
